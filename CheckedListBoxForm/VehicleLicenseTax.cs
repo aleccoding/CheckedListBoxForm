@@ -7,11 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Web;
 
 namespace CheckedListBoxForm
 {
     public partial class VehicleLicenseTax : Form
     {
+        #region 初始化
         private void Init()
         {
             this.Typebox.SelectedIndex = 0;
@@ -28,7 +30,8 @@ namespace CheckedListBoxForm
         {
             InitializeComponent();
         }
-        #region Events
+        #endregion
+        #region 方法集
         private Point startpoint;
         private void VehicleLicenseTax_Load(object sender, EventArgs e)
         {
@@ -193,14 +196,9 @@ namespace CheckedListBoxForm
                     break;
             }
             return taxperyear;
-            #region
-            //機車
-            //貨車
-            //大客車
-            //自用小客車
-            //營業用小客車
-            #endregion
         }
+        #endregion
+        #region 事件
         private void YearButton_CheckedChanged(object sender, EventArgs e)
         {
             if (YearButton.Checked)
@@ -241,7 +239,8 @@ namespace CheckedListBoxForm
                 if (from_date.Year == to_date.Year)
                 {
                     int Yod = (new DateTime(to_date.Year + 1, 1, 1) - new DateTime(from_date.Year, 1, 1)).Days;
-                    this.labans.Text ="貼心小叮嚀!查詢牌照稅天數期間至少一年";
+                    this.labans.Text ="貼心小叮嚀!" +
+                        "\n查詢牌照稅天數期間至少一年";
                 }
                 else
                 {
@@ -268,7 +267,7 @@ namespace CheckedListBoxForm
                                   $"\n計算天數: {DayOfYear}" +
                                   $"\n汽缸CC數/馬力: {this.Horsepowerbox.Text}" +
                                   $"\n用途: {this.Typebox.Text}" +
-                                  $"\n計算公式: {GetTaxPerYear()} * {DayOfYear} / {Yod}元" +
+                                  $"\n計算公式: {GetTaxPerYear()} * {DayOfYear} / {Yod}" +
                                   $"\n應納稅額: {Ans}元";
                         }
                         else if(i == (yearlist.Length -1))
@@ -281,7 +280,7 @@ namespace CheckedListBoxForm
                                   $"\n計算天數: {DayOfYear}" +
                                   $"\n汽缸CC數/馬力: {this.Horsepowerbox.Text}" +
                                   $"\n用途: {this.Typebox.Text}" +
-                                  $"\n計算公式: {GetTaxPerYear()} * {DayOfYear} / {Yod}元" +
+                                  $"\n計算公式: {GetTaxPerYear()} * {DayOfYear} / {Yod}" +
                                   $"\n應納稅額: {Ans}元";
                         }
                         else
@@ -292,7 +291,7 @@ namespace CheckedListBoxForm
                                   $"\n計算天數: {Yod}" +
                                   $"\n汽缸CC數/馬力: {this.Horsepowerbox.Text}" +
                                   $"\n用途: {this.Typebox.Text}" +
-                                  $"\n計算公式: {GetTaxPerYear()} * {Yod} / {Yod}元" +
+                                  $"\n計算公式: {GetTaxPerYear()} * {Yod} / {Yod}" +
                                   $"\n應納稅額: {GetTaxPerYear()}元";
                         }
                     }
@@ -304,16 +303,24 @@ namespace CheckedListBoxForm
             else
             {
                 int DayOfYear = (new DateTime(to_date.Year + 1, 1, 1) - new DateTime(from_date.Year, 1, 1)).Days;
-                this.labans.Text = $"使用期間:{DateTime.Now.ToString("yyyy")}/01/01 -{DateTime.Now.ToString("yyyy")}/12/31" +
-                                   $"\n計算天數:{DayOfYear}" +
-                                   $"\n汽缸CC數/馬力:{this.Horsepowerbox.Text}" +
-                                   $"\n用途:{this.Typebox.Text}" +
-                                   $"\n計算公式:{GetTaxPerYear()} * {DayOfYear} / {DayOfYear}元" +
-                                   $"\n應納稅額:{GetTaxPerYear()}元";
+                this.labans.Text = $"使用期間: {DateTime.Now.ToString("yyyy")}/01/01 - {DateTime.Now.ToString("yyyy")}/12/31" +
+                                   $"\n計算天數: {DayOfYear}" +
+                                   $"\n汽缸CC數/馬力: {this.Horsepowerbox.Text}" +
+                                   $"\n用途: {this.Typebox.Text}" +
+                                   $"\n計算公式: {GetTaxPerYear()} * {DayOfYear} / {DayOfYear}" +
+                                   $"\n應納稅額: {GetTaxPerYear()}元";
             }
             this.vScrollBar1.Maximum = this.labans.Text.Length * 4 / 3;
         }
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            this.linkLabel1.LinkVisited = true;
 
+            // Navigate to a URL.
+            System.Diagnostics.Process.Start("https://law-out.mof.gov.tw/LawContent.aspx?id=FL006130");
+        }
+        #endregion
+        #region 方法集2
         private void Usebox_SelectedIndexChanged(object sender, EventArgs e)
         {
             string carType = this.Typebox.Text;
